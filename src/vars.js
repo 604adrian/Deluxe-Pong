@@ -8,6 +8,7 @@ let raf;
 let running = false;
 let disply = 0;
 let startCount = 0;
+let twoPlayer = false;
 
 window.onload = (() => {
   const silkscreen = new FontFace(
@@ -29,6 +30,7 @@ window.onload = (() => {
 
 const whoops = new Audio('./audio/smb_mariodie.wav');
 const bump = new Audio('./audio/smb_bump.wav');
+
 const backgroud = new Howl({ 
   src: [
     './audio/background.mp3', 
@@ -36,5 +38,10 @@ const backgroud = new Howl({
   html5: true,
   loop: true,
 });
-const hit = new Audio('./audio/smb_jump-small.wav');
+const hit1 = new Audio('./audio/smb_jump-small.wav');
+const hit2 = new Audio('./audio/smb_jump-super.wav');
+
+const whoWon = new Audio('./audio/smb_powerup.wav');
+const thisGuy = new Audio('./audio/smb_1-up.wav');
+const ohYeah = new Audio('./audio/smb_kick.wav');
 

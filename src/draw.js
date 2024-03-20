@@ -19,7 +19,7 @@ function draw() {
     }
 
     if (
-      (
+      ((
         ball.x + ball.vx < paddle.x + paddle.width &&
         ball.y + ball.vy < paddle.y + paddle.height &&
         ball.y + ball.vy > paddle.y &&
@@ -29,6 +29,8 @@ function draw() {
         ball.y + ball.vy < paddle.y + paddle.height &&
         ball.y + ball.vy > paddle.y &&
         paddle === paddle2
+      )) && (
+        running
       )
     ) {
       scoreCount.count += 1;

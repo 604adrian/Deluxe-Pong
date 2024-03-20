@@ -1,5 +1,4 @@
 window.addEventListener("keydown", (event) => {
-  console.log(event.code);
   event.code === "ArrowUp"
     ? (paddle2.vy = -5)
     : event.code === 'ArrowDown'
@@ -7,7 +6,6 @@ window.addEventListener("keydown", (event) => {
 });
 
 window.addEventListener("keyup", (event) => {
-  console.log(event.code)
   event.code === "ArrowUp"
     ? (paddle2.vy = 0)
     : event.code === 'ArrowDown'
@@ -29,40 +27,84 @@ window.addEventListener("keyup", (event) => {
 });
 
 let startOver = false;
-function reset() {
-  backgroud.pause();
-  ctx.fillStyle = '#FF0000';
-  ctx.fillRect(20, 20, 150, 100);
-  clear();
-  startOver = false;
-  canvas.addEventListener('click', (event) => {
-    let x = event.pageX - canvas.offsetLeft,
-        y = event.pageY - canvas.offsetLeft;
-    if (y > 20 && y > 120 && x > 20 && x < 170) {
-      console.log('button clicked');
+
+function getBtn(ex, why, w, h, c, bol) {
+  return {
+    x: ex,
+    y: why,
+    width: w,
+    height: h,
+    colour: c,
+    draw() {
+      ctx.beginPath();
+      ctx.fillRect(this.x, this.y, this.width, this.height);
+      ctx.fillStyle = this.colour;
+      ctx.fill();
+    },
+    isClicked(evt) {
+      const mousePos = {
+        x: evt.clientX - canvas.offsetLeft,
+        y: evt.clientY - canvas.offsetTop
+      };
+      const pixel = ctx.getImageData(mousePos.x, mousePos.y, 1, 1).data;
+      const RBGToHex = (r,g,b) => {
+        r = r.toString(16);
+        g = g.toString(16);
+        b = b.toString(16);
+
+        if (r.length == 1)
+          r = "0" + r;
+        if (g.length == 1)
+          g = "0" + g;
+        if (b.length == 1)
+          b = "0" + b;
+
+        return "#" + r + g + b;
+      }
+      const colour = RBGToHex(pixel[0],pixel[1],pixel[2]);
+      console.log(this.colour, colour);
+      if (colour === this.colour) {
+        twoPlayer = bol;
+        raf = window.requestAnimationFrame(draw);
+      }
     }
-  })
+  };
 }
 
+
+
+const onePlayerBtn = getBtn(canvas.height/2, canvas.height/3, 200, 50, '#ff0000', true);
+const twoPlayerBtn = getBtn(canvas.height/5, canvas.width/3, 50, 40, '#ff0001', false)
 canvas.addEventListener("click", (e) => {
+  onePlayerBtn.draw();
+  twoPlayerBtn.draw();
+  onePlayerBtn.isClicked(e);
+  twoPlayerBtn.isClicked(e);
+
   function getRandomInt(min, max) {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
     return Math
       .floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
   }
+
+  function getMousePos(evt) {
+  }
+
+  getMousePos(e);
   if (!running) {
     ball.x = getRandomInt(251, 504);
     ball.y = getRandomInt(100, 209);
     running = true;
-    raf = window.requestAnimationFrame(draw);
+    paddle1.y = getRandomInt(30, 167);
+    paddle2.y = getRandomInt(30, 167);
     whoops.pause();
     whoops.currentTime = 0;
     backgroud.play();
     score.count = 0;
     score2.count = 0;
     startOver = true;
-    //reset();
+
   }
 });
 

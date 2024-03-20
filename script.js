@@ -56,11 +56,7 @@ function createScore(ex,why) {
 const score = createScore(10, 30);
 const score2 = createScore(canvas.width-30, 30);
 
-let winner = `${(score.count > score2.count) 
-    ? 'Player 1' 
-    : (score.count===score2.count)
-      ? 'Tie'
-      : 'Player 2'}`;
+
 
 const start = {
   count: 0,
@@ -117,34 +113,77 @@ const overMg = (() => {
 
       setTimeout(() => {
         if (!running) {
-          const colours = ['#3F3FBF','#7FBF3F',
-            '#BF3F3F','#BFBF3F','#3FBF7F','#0C2619','#5E2299'];
-
           whoWon.play();
 
+          const colours = ['#3F3FBF','#7FBF3F',
+            '#BF3F3F','#BFBF3F','#3FBF7F','#0C2619','#5E2299'];
           let fontSize = 25;
           let width = 30;
+          let winner = `${(score.count > score2.count) 
+              ? 'Player 1' 
+              : (score.count===score2.count)
+                ? 'Tie'
+                : 'Player 2'}`;
 
           const celebrateWinner = setInterval(() => {
             fontSize *= 1.05;
             width += 1;
             ctx.font = `${fontSize}px Silkscreen`;
-            ctx.fillStyle = colours[Math.floor(Math.random() * colours.length)]
+            ctx.fillStyle = colours[Math.floor(Math.random() * colours.length)];
             ctx.fillText(`${winner}`, canvas.width/3, (canvas.height/4)+width)
+            if (score.count > score2.count) paddle1.draw();
+            if (score.count < score2.count) paddle2.draw();
           }, 50);
 
-          setTimeout(() => { 
+          setTimeout(() => {
             clear();
-            clearInterval(celebrateWinner),
+            clearInterval(celebrateWinner);
             ctx.fillStyle = 'white';
-          }, 600)
+          }, 600);
 
           setTimeout(() => {
             thisGuy.play();
             ctx.font = `${fontSize}px Silkscreen`;
             ctx.fillText(`${winner}`, canvas.width/3, (canvas.height/4)+width)
+            let count = 0;
+            const visualizeWinner = setInterval(() => {
+              if (count===0) {
+                if (score.count > score2.count) paddle1.draw();
+                if (score.count < score2.count) paddle2.draw();
+              } 
+              if (
+                count===1 &&
+                score.count < score2.count
+              ) {
+                ctx.fillStyle = 'grey';
+                paddle1.draw();
+              }
+              if (
+                count===1 &&
+                score.count > score2.count
+              ) {
+                ctx.fillStyle = 'grey';
+                paddle2.draw();
+              }
+              if (
+                count===3 &&
+                score.count === score2.count
+              ) {
+                ctx.fillStyle = 'gray';
+                paddle1.draw();
+              }
+              if (
+                count===4 &&
+                score.count === score2.count
+              ) {
+                ctx.fillStyle = 'gray';
+                paddle2.draw();
+              }
+              count++;
+              if (count>4) clearInterval(visualizeWinner);
+            }, 1)
           }, 1600)
-
+ 
         }
       }, 3000);
     }
@@ -164,7 +203,7 @@ const overMg = (() => {
 })
 
 function clear() {
-  ctx.fillStyle = "rgb(0 0 0 / 30%)";
+  ctx.fillStyle = "rgb(11 25 59 / 30%)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 

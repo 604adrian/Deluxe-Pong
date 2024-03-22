@@ -1,14 +1,15 @@
 twoPlayer = true;
 let lastTs = Date.now();
+const strip1 = createStrip(0);
+const strip2 = createStrip(window.innerHeight - strip1.height);
 
 function draw() {
   clear();
   const delta = Date.now() - lastTs;
   lastTs = Date.now();
+  console.log(num);
 
   ball.draw();
-  paddle1.draw();
-  score.draw();
 
   function paddleUpdate(paddle, scoreCount, hitSound) {
     paddle.y += (paddle.vy * delta / 10) * (paddle.count*1.5);
@@ -45,6 +46,11 @@ function draw() {
    paddleUpdate(paddle2, score2, hit2);
   }
 
+  paddle1.draw();
+  strip1.draw();
+  score.draw();
+  score2.draw();
+
   if (ball.count<3) {
     ball.x += ball.vx*ball.count;
     ball.y += ball.vy*ball.count;
@@ -57,7 +63,8 @@ function draw() {
 
   if (
     ball.y + ball.vy > canvas.height - ball.radius ||
-    ball.y + ball.vy < ball.radius
+    ball.y + ball.vy < ball.radius ||
+    ball.y + ball.vy < strip1.height + ball.radius
   ) {
     ball.vy = -ball.vy;
   }
@@ -75,13 +82,14 @@ function draw() {
       twoPlayer
     )
   ) {
+    running = false;
+    msg = true;
+    bump.play();
+    backgroud.stop();
     setTimeout(() => {      
-      bump.play();
-      backgroud.stop();
       window.cancelAnimationFrame(raf);
-      running = false;
       overMg();
-    }, 170)
+    }, 100)
   }
 
   const inc = 0.00001;

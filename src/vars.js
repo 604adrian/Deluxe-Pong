@@ -1,4 +1,5 @@
-const canvas = document.getElementById("canvas");
+const canvas = document.getElementById('canvas');
+
 const ctx = canvas.getContext("2d");
 ctx.font = "25px Silkscreen";
 ctx.canvas.width = window.innerWidth;
@@ -54,7 +55,7 @@ const onePlayerBtn = getBtn(
         'Silkscreen',
         200,
         50,
-      );
+      ),
       twoPlayerBtn = getBtn(
         (canvas.width/2)-100, 
         (canvas.height/5)+70, 

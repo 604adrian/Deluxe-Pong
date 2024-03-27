@@ -1,5 +1,23 @@
 twoPlayer = true;
 let lastTs = Date.now();
+
+function createStrip(why) {
+  return {
+    x: 0,
+    y: why,
+    width: window.innerWidth,
+    height: 45,
+    colour: 'black',
+    draw() {
+      ctx.beginPath();
+      ctx.fillStyle = this.colour;
+      ctx.fillRect(this.x, this.y, this.width, this.height)
+      ctx.fill();
+      ctx.fillStyle = 'white';
+    }
+  }
+}
+
 const strip1 = createStrip(0);
 const strip2 = createStrip(window.innerHeight - strip1.height);
 
@@ -7,7 +25,6 @@ function draw() {
   clear();
   const delta = Date.now() - lastTs;
   lastTs = Date.now();
-  console.log(num);
 
   ball.draw();
 
@@ -90,10 +107,11 @@ function draw() {
       window.cancelAnimationFrame(raf);
       overMg();
     }, 100)
+
   }
 
   const inc = 0.00001;
-  setInterval(() => (ball.count+=inc, paddle1.count+=inc), 5000);
+  setInterval(() => (ball.count+=inc, paddle1.count+=inc, paddle2.count+=inc), 5000);
 
   raf = window.requestAnimationFrame(draw);
 }

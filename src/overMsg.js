@@ -1,4 +1,13 @@
-const overMg = (() => {
+const timeouts = [];
+const intervals = [];
+
+function checkIfInArr(timeout) {
+  if (!timeouts.includes(timeout)) {
+    timeouts.push(timeout);
+  };
+};
+
+function overMg () {
 
   const clickToRestart = () => {
     ctx.font = "15px Silkscreen";
@@ -16,63 +25,76 @@ const overMg = (() => {
       ((canvas.height/3)*2.3) + 20
     );
     msgOver = true;
+    strip1.colour = `${twoPlayer ? 'rgb(11 25 59 / 60%)' : 'transparent'}`;
+    strip1.draw();
+    score.draw();
+    score2.draw();
+    strip1.colour = 'black';
   };
-
+    
   if (!running) {
+    msgOver = true;
     backgroud.stop()
     ctx.beginPath();
 
     if (!twoPlayer) {
       ctx.font = "60px Silkscreen";
 
-      setTimeout(() => {
+      const a1 = setTimeout(() => {
         if (!running) {
           whoops.play();
           ctx.fillStyle = "rgb(153 0 0 / 30%)";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.fillStyle = 'white';
+          checkIfInArr(a1);
         }
       }, 1000);
 
       const game = 'GAME';
       const over = 'OVER';
-      setTimeout(() => {
+      const a2 = setTimeout(() => {
         if (!running) {
           ctx.fillText(
             `${game}`, 
             (canvas.width/2) - ((game.length*60)/2),
             canvas.height/4
           )
+          checkIfInArr(a2);
         }
       }, 2000);
 
-      setTimeout(() => {
+      const a3 = setTimeout(() => {
         if (!running) {
           ctx.fillText(
             `${over}`, 
             (canvas.width/2) - ((over.length*60)/2),
-            (canvas.height/4)+50)
+            (canvas.height/4)+50
+          )
+          checkIfInArr(a3);
         }
       }, 3000);
 
-      setTimeout(() => {
+      const a4 = setTimeout(() => {
         if (!running) {
           clickToRestart();
+          checkIfInArr(a4);
         }
       }, 3300)
    } 
 
    else {
 
-     setTimeout(() => {
+     const b1 = setTimeout(() => {
         if (!running) {
           ctx.font = "25px Silkscreen";
           ctx.fillText(`WINNER: `, canvas.width/3, canvas.height/4)
+          checkIfInArr(b1);
         }
       }, 2000);
 
-      setTimeout(() => {
+      const b2 = setTimeout(() => {
         if (!running) {
+          checkIfInArr(b2);
           whoWon.play();
 
           const colours = ['#3F3FBF','#7FBF3F',
@@ -99,77 +121,81 @@ const overMg = (() => {
             if (score.count < score2.count) paddle2.draw();
           }, 10);
 
-          setTimeout(() => {
-            clear();
-            clearInterval(celebrateWinner);
-            ctx.fillStyle = 'white';
+          const b3 = setTimeout(() => {
+            if (!running) {
+              clear();
+              clearInterval(celebrateWinner);
+              ctx.fillStyle = 'white';
+              checkIfInArr(b3);
+            };
           }, 600);
 
-          setTimeout(() => {
-            thisGuy.play();
-            ctx.font = `${fontSize}px Silkscreen`;
-            ctx.fillText(
-              `${winner}`, 
-              (canvas.width/2) - ((winner.length*fontSize)/2),
-              (canvas.height/4)+width
-            )
-            let count = 0;
-            const visualizeWinner = setInterval(() => {
-              if (count===0) {
-                if (score.count > score2.count) paddle1.draw();
-                if (score.count < score2.count) paddle2.draw();
-              } 
+          const b4 = setTimeout(() => {
+            if (!running) {
+              checkIfInArr(b4);
+              thisGuy.play();
+              ctx.font = `${fontSize}px Silkscreen`;
+              ctx.fillText(
+                `${winner}`, 
+                (canvas.width/2) - ((winner.length*fontSize)/2),
+                (canvas.height/4)+width
+              )
+              let count = 0;
+              const visualizeWinner = setInterval(() => {
+                if (count===0) {
+                  if (score.count > score2.count) paddle1.draw();
+                  if (score.count < score2.count) paddle2.draw();
+                } 
 
-              if (
-                count===1 &&
-                score.count < score2.count
-              ) {
-                ctx.fillStyle = 'grey';
-                paddle1.draw();
-              }
+                if (
+                  count===1 &&
+                  score.count < score2.count
+                ) {
+                  ctx.fillStyle = 'grey';
+                  paddle1.draw();
+                }
 
-              if (
-                count===1 &&
-                score.count > score2.count
-              ) {
-                ctx.fillStyle = 'grey';
-                paddle2.draw();
-              }
+                if (
+                  count===1 &&
+                  score.count > score2.count
+                ) {
+                  ctx.fillStyle = 'grey';
+                  paddle2.draw();
+                }
 
-              if (
-                count===3 &&
-                score.count === score2.count
-              ) {
-                ctx.fillStyle = 'gray';
-                paddle1.draw();
-              }
+                if (
+                  count===3 &&
+                  score.count === score2.count
+                ) {
+                  ctx.fillStyle = 'gray';
+                  paddle1.draw();
+                }
 
-              if (
-                count===4 &&
-                score.count === score2.count
-              ) {
-                ctx.fillStyle = 'gray';
-                paddle2.draw();
-              }
+                if (
+                  count===4 &&
+                  score.count === score2.count
+                ) {
+                  ctx.fillStyle = 'gray';
+                  paddle2.draw();
+                }
 
-              if (count===5) {
-                setTimeout(() => clickToRestart(), 10)
-              }
+                if (count===5) {
+                  const b5 = setTimeout(() => clickToRestart(), 10)
+                  checkIfInArr(b5);
+                }
 
-              count++;
+                count++;
 
-              if (count>5) 
-                clearInterval(visualizeWinner);
+                if (count>5) 
+                  clearInterval(visualizeWinner);
 
-            }, 1)
+              }, 1)
+            };
           }, 1600)
  
         }
       }, 3000);
     }
-
-
   }
-})
-
+}
 

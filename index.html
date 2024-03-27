@@ -8,93 +8,63 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload, stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" media="print" onload="this.meda.='all'">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" media="print" onload="this.media.='all'">
+    <link rel='preload, stylesheet' href="styles.css">
+    <style>body { background-color: black }</style>
     <title>Deluxe Pong</title>
-    <style type='text/css' rel='preload, stylesheet'>
-      * { font-family: 'Silkscreen', monospace; }
-      html, body, #loader-container {
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	overflow: hidden;
-      }
-      #loader-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: fixed;
-	background: black;
-	z-index: 1;
-      }
-      #spinner {
-	width: 64px;
-	height: 64px;
-	border: 8px solid;
-	border-color: #3d5af1 transparent #3d5af1 transparent;
-	border-radius: 50%;
-	animation: spin-anim 1.2s linear infinite;
-      }
+  </head>
 
-      @keyframes spin-anim {
-	0% {
-	  transform: rotate(0deg);
-	}
-	100% {
-	  transform: rotate(360deg);
-	}
-      }
-    </style>
-    <script
-      type="text/javascript"
-      src='https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js'>
-    </script>
+  <body>           
+    <div id="title">
+      <div id="h1-container"><h1>DELUXE PONG</h1></div>
+      <p id="subtitle">
+      	Thought Pong was gone? Wrong. With Deluxe Pong, you can Pong along all night long.
+      </p>
+      <br style="margin-bottom: 35px">
+      <hr>
+    </div>
+
+    <div id="grid-container">
+      <div id="main-page">
+
+	<button id="play-btn">
+	  PLAY WITH POP-UP <br> 
+	  <span id='recco'>(recommended)</span>
+	  <br>
+	</button>
+
+	<button id='play-btn2' onclick="location.href = 'game.html'">
+	  PLAY IN CURRENT WINDOW
+	</button>
+
+	<button id="tutor" onclick="location.href = 'tutorial.html'">TUTORIAL</button>
+
+	
+
+	<div style='height: 100px'>
+	  <hr > 
+	  <p id="disclaimer" style="margin-top: 22px;">
+	  <em>Note:</em> This site makes use of pop-up windows. If your browser or ad-blocker automatically blocks all pop-ups, then please ensure that you've enabled pop-up windows for this site.
+	  </p>
+	</div>
+      </div>
+    </div>
+
+   <footer>
+      <hr>
+      <p id="first">
+	<em>Sound credits:</em>  Deluxe Pong has sound effects. These sound effects come from <a href="https://themushroomkingdom.net/media/smb/wav" target="_blank">this website</a>.
+      </p>
+      <br>
+      <p id="second">Check out <a href="https://github.com/604adrian">my GitHub</a>.</p>
+    </footer>
 
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-	const head = document.getElementsByTagName('head')[0];
-      	const body = document.getElementsByTagName('body')[0];
+      const playBtn = document.getElementById('play-btn');
+      let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+      width=1100,height=700,left=100,top=100`;
+      playBtn.onclick = () => window.open('game.html', 'game', params)
+    </script>
 
-	const vars = document.createElement('script');
-	vars.src = './src/vars.js';
-
-	const event = document.createElement('script');
-	event.src = './src/event.js';
-
-	const scriptjs = document.createElement('script');
-	scriptjs.src = 'script.js';
-
-	const overMsgjs = document.createElement('script');
-	overMsgjs.src = './src/overMsg.js'
-
-	const drawCtx = document.createElement('script');
-	drawCtx.src = './src/draw.js';
-
-	const loaderContainer = document.getElementById('loader-container');
-
-	var scripts = [vars,event,scriptjs,overMsgjs,drawCtx];
-	scripts.map((v,i) => {
-	  v.defer;
-	  head.appendChild(v);
-	  console.log(i);
-      	})
-
-	scripts[scripts.length-1].addEventListener('load', () => {
-	  loaderContainer.style.display = 'none';
-	});
-    })	
-
-
-   </script>
-
-  </head>
-  <body>           
-    <div id="loader-container">
-      <div id='spinner'></div>
-    </div>
-    <canvas id="canvas" position="absolute"></canvas>
-       <!-- script src="./src/event.js"></script>
-    <script src="script.js"></script>
-    <script src="./src/overMsg.js"></script>
-    <script src="./src/draw.js"></script -->
   </body>
 </html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏓</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload, stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" media="print" onload="this.media.='all'">
+    <link rel='preload, stylesheet' href="styles2.css">
+    <title>Deluxe Pong</title>
+    <script
+      type="text/javascript"
+      src='https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js'>
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+	const head = document.getElementsByTagName('head')[0];
+      	const body = document.getElementsByTagName('body')[0];
+
+	const vars = document.createElement('script');
+	vars.src = './src/vars.js';
+
+	const sounds = document.createElement('script');
+	sounds.src = './src/sounds.js';
+
+	const events1 = document.createElement('script');
+	events1.src = './src/events1.js';
+
+	const events2 = document.createElement('script');
+	events2.src = './src/events2.js';
+
+	const vars2 = document.createElement('script');
+	vars2.src = './src/vars2.js';
+
+	const overMsgjs = document.createElement('script');
+	overMsgjs.src = './src/overMsg.js'
+
+	const drawCtx = document.createElement('script');
+	drawCtx.src = './src/draw.js';
+
+	const scripts = [
+	  vars,
+	  sounds,
+	  events1,
+	  events2,
+	  vars2,
+	  overMsgjs,
+	  drawCtx
+	];
+	const loaderContainer = document.getElementById('loader-container');
+
+	scripts[scripts.length-1].onload = () => {
+	  // necessary to load font
+	  let count = 1;
+	  const loadFont = setInterval(() => {
+	    if (count===1) {
+	      numOfPlayersScreen();
+	    }
+	    else if (count===2) {
+	      numOfPlayersScreen();
+	    }
+	    else {
+	      clearInterval(loadFont);
+	    }
+	    count++;
+	  }, 50)
+
+	  loaderContainer.style.display = 'none';
+	}
+
+	scripts.forEach(v => head.appendChild(v));
+    })	
+   </script>
+  </head>
+  <body>           
+    <div id="loader-container">
+      <div id='spinner'></div>
+    </div>
+    <canvas id="canvas" position="absolute"></canvas>
+  </body>
+</html>

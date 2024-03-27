@@ -1,5 +1,6 @@
-const n = window.innerWidth / 145;
+const n = window.innerWidth / 130;
 const num = `${n<6 ? 6 : n }`;
+let startCount = 0;
 
 const ball = {
   x: 100,
@@ -17,27 +18,10 @@ const ball = {
   },
 }
 
-function createStrip(why) {
-  return {
-    x: 0,
-    y: why,
-    width: window.innerWidth,
-    height: 45,
-    colour: 'black',
-    draw() {
-      ctx.beginPath();
-      ctx.fillStyle = this.colour;
-      ctx.fillRect(this.x, this.y, this.width, this.height)
-      ctx.fill();
-      ctx.fillStyle = 'white';
-    }
-  }
-}
-
 function createPaddle(ex) {
   return {
     x: ex,
-    y: canvas.width/5,
+    y: window.innerWidth/5,
     height: 100,
     width: 20,
     vx: 5,
@@ -51,11 +35,14 @@ function createPaddle(ex) {
       ctx.fillStyle = this.colour;
       ctx.fill();
     },
+    reset() {
+      this.y = window.innerWidth/5;
+    }
   }
 }
 
 const paddle1 = createPaddle(30);
-const paddle2 = createPaddle(canvas.width-55);
+const paddle2 = createPaddle(window.innerWidth-55);
 
 function createScore(p,ex,why) {
   return {
@@ -74,13 +61,13 @@ function createScore(p,ex,why) {
 
 const score = createScore('PLAYER ONE', 20, 30);
 const p2 = 'PLAYER TWO';
-const score2 = createScore(p2, canvas.width-(p2.length*20), 30);
+const score2 = createScore(p2, window.innerWidth-(p2.length*20), 30);
 
 const start = {
   count: 0,
   message: `${startCount<1 ? 'start again' : 'start'}`,
   draw() {
-    paddle1.y = canvas.height / 3;
+    paddle1.y = window.innerHeight / 3;
     score.count = 0;
     ctx.beginPath();
     ctx.font = "25px Silkscreen";
@@ -91,6 +78,6 @@ const start = {
 
 function clear(perc="50%") {
   ctx.fillStyle = `rgb(11 25 59 / ${perc})`;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 }
 

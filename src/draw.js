@@ -67,9 +67,9 @@ function draw() {
 
   function paddleUpdate(paddle, scoreCount, hitSound) {
     paddle.y += (paddle.vy * delta / 10) * (paddle.count*1.5);
-    if (paddle.y + paddle.vy > canvas.height) { 
+    if (paddle.y + paddle.vy > canvas.height - strip1.height - 10) { 
       paddle.y = 0 - paddle.height;
-    } else if (paddle.y + paddle.vy < 0 - paddle.height) {
+    } else if (paddle.y + paddle.vy < 0 - paddle.height - strip1.height - 10 ) {
       paddle.y = canvas.height - paddle.vy;
     }
 
@@ -127,11 +127,10 @@ function draw() {
   if (ball.vy < -1)
     ball.vy = ball.vy + 0.0001;
 
-  if (twoPlayer) {
-   paddle2.draw();
-   score2.draw()
-   paddleUpdate(paddle2, score2, hit2);
-  }
+  paddle2.draw();
+  score2.draw()
+  paddleUpdate(paddle2, score2, hit2);
+
 
   paddle1.draw();
   strip1.draw();
@@ -152,9 +151,7 @@ function draw() {
     if (scoreBoard.count < winScore - 1) {
       scoreBoard.count++;
       ball.x = canvas.width / 2;
-      ball.y = canvas.height / 2;
       ball.vx = -ball.vx;
-      ball.vy = - ball.vy;
       if (Math.floor(Math.random() * (0, 1))) {
         if (ball.x > canvas.width/2) {
           ball.vx = (ball.vx -1)
@@ -180,6 +177,10 @@ function draw() {
      }, 200);
     }
   }
+  
+  if (!twoPlayer && running ) {
+    paddle1.y = ball.y - paddle1.height/2;
+  };
 
   if (
     ball.y + ball.vy > canvas.height - ball.radius ||

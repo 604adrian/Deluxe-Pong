@@ -9,27 +9,28 @@ function checkIfInArr(timeout) {
 
 function overMg () {
 
-  const clickToRestart = () => {
-    ctx.font = "15px Silkscreen";
-    ctx.fillStyle = 'rgba(245,255,255,80%)';
+  function clickToRestart() {
+    const fontSize = 20;
     const restart1 = 'click anywhere';
     const restart2 = 'to restart';
+    ctx.font = `${fontSize}px Silkscreen`;
     ctx.fillText(
       `${restart1}`,
-      (canvas.width/2) - ((restart1.length*15)/2), 
+      (canvas.width/2) - ((restart1.length*fontSize)/2), 
       (canvas.height/3)*2.3
     );
     ctx.fillText(
       `${restart2}`,
-      (canvas.width/2) - ((restart2.length*15)/2), 
-      ((canvas.height/3)*2.3) + 20
+      (canvas.width/2) - ((restart2.length*fontSize)/2), 
+      ((canvas.height/3)*2.3) + 25
     );
     msgOver = true;
-    strip1.colour = `${twoPlayer ? 'rgb(11 25 59 / 60%)' : 'transparent'}`;
-    strip1.draw();
+    strip1.colour = `${!twoPerson && 'transparent'}`;
     score.draw();
     score2.draw();
+    stripBoundry.colour = 'black';
     strip1.colour = 'black';
+
   };
     
   if (!running) {
@@ -101,11 +102,9 @@ function overMg () {
             '#BF3F3F','#BFBF3F','#3FBF7F','#0C2619','#5E2299'];
           let fontSize = 25;
           let width = 30;
-          let winner = `${(score.count > score2.count) 
+          let winner = `${(score.count < score2.count) 
               ? 'Player 1' 
-              : (score.count===score2.count)
-                ? 'Tie'
-                : 'Player 2'}`;
+              : 'Player 2'}`;
 
           const celebrateWinner = setInterval(() => {
             fontSize *= 1.02;

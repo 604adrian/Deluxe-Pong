@@ -50,7 +50,8 @@ function draw() {
         ((canvas.width/2)-((v.length*20)/side)), 
         200 + (i * 30)
       );
-    })
+    });
+    canvas.style.cursor = 'pointer';
   };
 
   function clickTransition() {
@@ -75,6 +76,7 @@ function draw() {
         '',
         "press 'w' to continue"
       ];
+      canvas.style.cursor = 'not-allowed';
       break;
    case 1:
       subtexts = [
@@ -85,6 +87,7 @@ function draw() {
         '',
         "press 's' to continue"
       ];
+      canvas.style.cursor = 'not-allowed';
       break;
     case 2:
       subtexts = [
@@ -96,6 +99,7 @@ function draw() {
         "press the up arrow",
         'to continue'
       ];
+      canvas.style.cursor = 'not-allowed';
       break;
     case 3:
       subtexts = [
@@ -107,6 +111,7 @@ function draw() {
         "press the down arrow",
         'to continue'
       ];
+      canvas.style.cursor = 'not-allowed';
       break;
     case 4:
       text = 'RULES ';

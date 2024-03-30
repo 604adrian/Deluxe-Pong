@@ -84,4 +84,13 @@ function mouseDownAni(btn, btn2, newColour, offset) {
   }, 1000);
 }
 
+canvas.addEventListener('mouseover', () => {
+  if (!running) {
+    canvas.style.cursor = 'pointer';
+  } else if (tutorial) {
+    canvas.style.cursor = 'pointer';
+  } else {
+    canvas.style.cursor = 'not-allowed';
+  }
+})
 

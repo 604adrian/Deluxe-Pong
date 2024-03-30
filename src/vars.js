@@ -1,4 +1,6 @@
 const canvas = document.getElementById('canvas');
+canvas.style.cursor = 'pointer';
+
 const ctx = canvas.getContext("2d");
 ctx.font = "25px Silkscreen";
 ctx.canvas.width = window.innerWidth;

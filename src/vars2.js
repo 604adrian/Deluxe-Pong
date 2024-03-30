@@ -1,12 +1,8 @@
-const n = window.innerWidth / 130;
-const num = `${n<6 ? 6 : n }`;
-let startCount = 0;
-
 const ball = {
-  x: 100,
-  y: 100,
-  vx: num/1.3,
-  vy: (num/2)/1.3,
+  x: (canvas.width + 10) / 2,
+  y: canvas.height/2,
+  vx: 10/1.3,
+  vy: 5/1.3,
   count: 1,
   radius: 10,
   color: "aliceblue",
@@ -50,9 +46,10 @@ function createScore(p,ex,why) {
     count: 0,
     x: ex,
     y: why,
+    fontSize: 20,
     draw() {
       ctx.beginPath();
-      ctx.font = "20px Silkscreen";
+      ctx.font = `${this.fontSize}px Silkscreen`;
       ctx.fillStyle = 'white';
       ctx.fillText(`${this.player}: ${this.count}`, this.x, this.y);
     }
@@ -65,7 +62,6 @@ const score2 = createScore(p2, window.innerWidth-(p2.length*20), 30);
 
 const start = {
   count: 0,
-  message: `${startCount<1 ? 'start again' : 'start'}`,
   draw() {
     paddle1.y = window.innerHeight / 3;
     score.count = 0;

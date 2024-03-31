@@ -1,8 +1,8 @@
 const ball = {
   x: (canvas.width + 10) / 2,
   y: canvas.height/2,
-  vx: 10/1.3,
-  vy: 5/1.3,
+  vx: 5/1.3,
+  vy: 2.5/1.3,
   count: 1,
   radius: 10,
   color: "aliceblue",

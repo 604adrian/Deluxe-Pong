@@ -9,7 +9,36 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload, stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" media="print" onload="this.media.='all'">
-    <link rel='preload, stylesheet' href="styles2.css">
+    <style type+'text/css' rel='preload, stylesheet'>
+     #loader-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	background: black;
+	z-index: 1;
+	width: 100vw;
+	height: 100vh;
+      }
+      #spinner {
+	width: 64px;
+	height: 64px;
+	border: 8px solid;
+	border-color: #3d5af1 transparent #3d5af1 transparent;
+	border-radius: 50%;
+	animation: spin-anim 1.2s linear infinite;
+      }
+
+      @keyframes spin-anim {
+	0% {
+	  transform: rotate(0deg);
+	}
+	100% {
+	  transform: rotate(360deg);
+	}
+      }
+    </style>
+    <link rel='preload, stylesheet' href='styles2.css'>
     <title>Deluxe Pong</title>
     <script
       type="text/javascript"
@@ -21,18 +50,15 @@
       	const body = document.getElementsByTagName('body')[0];
 
 	const vars = document.createElement('script');
-	vars.src = './src/vars.js';
-
 	const sounds = document.createElement('script');
-	sounds.src = './src/sounds.js';
-
 	const vars2 = document.createElement('script');
-	vars2.src = './src/vars2.js';
-
 	const tutor = document.createElement('script');
-	tutor.src = './src/tutorial.js'
-
 	const events1 = document.createElement('script');
+
+	vars.src = './src/vars.js';
+	sounds.src = './src/sounds.js';
+	vars2.src = './src/vars2.js';
+	tutor.src = './src/tutorial.js'
 	events1.src = './src/events1.js';
 
 	const scripts = [vars,sounds,vars2,events1,tutor];

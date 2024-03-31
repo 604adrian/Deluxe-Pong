@@ -25,7 +25,7 @@ function overMg () {
       ((canvas.height/3)*2.3) + 25
     );
     msgOver = true;
-    strip1.colour = `${!twoPerson && 'transparent'}`;
+    strip1.colour = `${!twoPlayer && 'transparent'}`;
     score.draw();
     score2.draw();
     stripBoundry.colour = 'black';

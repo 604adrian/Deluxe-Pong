@@ -9,7 +9,40 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload, stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" media="print" onload="this.media.='all'">
-    <link rel='preload, stylesheet' href="styles2.css">
+    <style type="text/css" rel='preload, stylesheet'>
+     * { font-family: 'Silkscreen', monospace; }
+      html, body, #loader-container {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+      }
+      #loader-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	background: black;
+	z-index: 1;
+      }
+      #spinner {
+	width: 64px;
+	height: 64px;
+	border: 8px solid;
+	border-color: #3d5af1 transparent #3d5af1 transparent;
+	border-radius: 50%;
+	animation: spin-anim 1.2s linear infinite;
+      }
+
+      @keyframes spin-anim {
+	0% {
+	  transform: rotate(0deg);
+	}
+	100% {
+	  transform: rotate(360deg);
+	}
+      }
+    </style>
     <title>Deluxe Pong</title>
     <script
       type="text/javascript"
@@ -20,36 +53,23 @@
 	const head = document.getElementsByTagName('head')[0];
       	const body = document.getElementsByTagName('body')[0];
 
-	const vars = document.createElement('script');
-	vars.src = './src/vars.js';
+	const s1 = document.createElement('script');
+	const s2 = document.createElement('script');
+	const s3 = document.createElement('script');
+	const s4 = document.createElement('script');
+	const s5 = document.createElement('script');
+	const s6 = document.createElement('script');
+	const s7 = document.createElement('script');
 
-	const sounds = document.createElement('script');
-	sounds.src = './src/sounds.js';
+	s1.src = './src/vars.js';
+	s2.src = './src/sounds.js';
+	s3.src = './src/events1.js';
+	s4.src = './src/events2.js';
+	s5.src = './src/vars2.js';
+	s6.src = './src/draw.js';
+	s7.src = './src/overMsg.js'
 
-	const events1 = document.createElement('script');
-	events1.src = './src/events1.js';
-
-	const events2 = document.createElement('script');
-	events2.src = './src/events2.js';
-
-	const vars2 = document.createElement('script');
-	vars2.src = './src/vars2.js';
-
-	const overMsgjs = document.createElement('script');
-	overMsgjs.src = './src/overMsg.js'
-
-	const drawCtx = document.createElement('script');
-	drawCtx.src = './src/draw.js';
-
-	const scripts = [
-	  vars,
-	  sounds,
-	  events1,
-	  events2,
-	  vars2,
-	  overMsgjs,
-	  drawCtx
-	];
+	const scripts = [s1, s2, s3, s3, s4, s5, s6, s7];
 	const loaderContainer = document.getElementById('loader-container');
 
 	scripts[scripts.length-1].onload = () => {
@@ -62,16 +82,17 @@
 	    else if (count===2) {
 	      numOfPlayersScreen();
 	    }
+	    else if (count===3) {
+	      loaderContainer.style.display = 'none';
+	    }
 	    else {
 	      clearInterval(loadFont);
 	    }
 	    count++;
 	  }, 50)
-
-	  loaderContainer.style.display = 'none';
 	}
 
-	scripts.forEach(v => head.appendChild(v));
+	scripts.forEach(v => body.appendChild(v));
     })	
    </script>
   </head>
@@ -79,6 +100,6 @@
     <div id="loader-container">
       <div id='spinner'></div>
     </div>
-    <canvas id="canvas" position="absolute"></canvas>
+    <canvas id="canvas" position="absolute" z-index=-1 defer></canvas>
   </body>
 </html>

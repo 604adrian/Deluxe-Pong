@@ -44,6 +44,7 @@ function createStrip(why) {
 const mainBoundry = createBoundry(window.innerHeight);
 const strip1 = createStrip(0);
 const strip2 = createStrip(window.innerHeight - strip1.height);
+let mark;
 let j = 0;
 
 function draw() {
@@ -67,11 +68,19 @@ function draw() {
 
   function paddleUpdate(paddle, scoreCount, hitSound) {
     paddle.y += (paddle.vy * delta / 10) * (paddle.count*1.5);
-    if (paddle.y + paddle.vy > canvas.height - strip1.height - 10) { 
-      paddle.y = 0 - paddle.height;
-    } else if (paddle.y + paddle.vy < 0 - paddle.height - strip1.height - 10 ) {
-      paddle.y = canvas.height - paddle.vy;
-    }
+    // down to up
+    if (
+      paddle.y > canvas.height
+      && paddle.vy > 0
+    ) { 
+      paddle.y = strip1.height - paddle.height + 1;
+    // up to down
+    } else if (
+      paddle.y < strip1.height - paddle.height
+      && paddle.vy < 0
+    ) {
+      paddle.y = canvas.height + paddle.height;
+    } 
 
     if (
       ((
@@ -91,12 +100,40 @@ function draw() {
       hitSound.play();
       ball.vx = -ball.vx;
       j++;
-      console.log(j)
+
+      function yAxis() {
+        if (ball.vx > 5) {
+          ball.vx = (ball.vx + 1);
+          ball.vy = (ball.vy + 1);
+        }
+      }
+
+      if (j < 3) {
+        if (ball.vx > 0) {
+          ball.vx = (ball.vx + 2);
+          ball.vy = (ball.vy + 1);
+        } else {
+          ball.vx = (ball.vx - 2);
+          ball.vy = (ball.vy - 1);
+        }
+      } else if (j > 3 && j > 7) {
+        if (ball.vx > 0) {
+          ball.vx = (ball.vx + 1);
+          ball.vy = (ball.vy + 0.5);
+        } else {
+          ball.vx = (ball.vx - 0.5);
+          ball.vy = (ball.vy - 0.5);
+        }
+      }
+
       if (j % 3) {
         let i = 0;
+        
+        if (j > 10) yAxis();
 
         switch (Math.floor(Math.random()*(0,2))) {
           case 2:
+            if (j > 10) break;
             const changeCourse = setInterval(() => {
               if (i > 3) { clearInterval(changeCourse1)};
               ball.vy = (ball.vy + 0.15);
@@ -104,6 +141,7 @@ function draw() {
             }, 200)
             break;
           case 1:
+            if (j > 10) break;
             const changeCourse2 = setInterval(() => {
               if (i > 3) { clearInterval(changeCourse2)};
               ball.vy = (ball.vy + 0.25);
@@ -111,10 +149,7 @@ function draw() {
             }, 200)
             break;
           case 0:
-            if (ball.vx > 5) {
-              ball.vx = (ball.vx + 1);
-              ball.vy = (ball.vy + 1);
-            }
+            yAxis();
             break;
          }
       }
@@ -146,10 +181,24 @@ function draw() {
   }
 
   paddleUpdate(paddle1, score, hit1);
+  
+  function endGame() {
+     setTimeout(() => {
+        ball.vx = -ball.vx;
+        running = false;
+        msg = true;
+        bump.play();
+        backgroud.stop();
+        window.cancelAnimationFrame(raf);
+        canvas.style.cursor = 'pointer';
+        overMg();
+     }, 200);
+  }
 
   function resetDrawingBoard(scoreBoard) {
+    scoreBoard.count++;
+    scoreBoard.draw();
     if (scoreBoard.count < winScore - 1) {
-      scoreBoard.count++;
       ball.x = canvas.width / 2;
       ball.vx = -ball.vx;
       if (Math.floor(Math.random() * (0, 1))) {
@@ -163,18 +212,7 @@ function draw() {
       }
       paralized = false;
    } else if (scoreBoard.count <= winScore-1 && !paralized) {
-     scoreBoard.count++;
-     scoreBoard.draw();
-     ball.vx = -ball.vx;
-     setTimeout(() => {
-        running = false;
-        msg = true;
-        bump.play();
-        backgroud.stop();
-        window.cancelAnimationFrame(raf);
-        canvas.style.cursor = 'pointer';
-        overMg();
-     }, 200);
+     endGame();
     }
   }
   
@@ -190,7 +228,7 @@ function draw() {
     ball.vy = -ball.vy;
   }
 
-  if (ball.x + ball.vx < paddle1.x + paddle1.widht) {
+  if (ball.x + ball.vx < paddle1.x + paddle1.width) {
     paddle1.vy = 0;
     paralized = true;
   }
@@ -223,9 +261,8 @@ function draw() {
     paralized = false;
   }
 
-  if (score.count >= winScore || score2.count >= winScore){
-    console.log('won!');
-  }
+  if (score.count >= 11 || score2.count >= 11)
+    endGame();
 
   raf = window.requestAnimationFrame(draw);
 }

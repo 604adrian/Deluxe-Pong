@@ -51,8 +51,10 @@ function draw() {
         200 + (i * 30)
       );
     });
-    canvas.style.cursor = 'pointer';
   };
+
+  if (screen>2) { canvas.style.cursor = 'pointer' }
+  else { canvas.style.cursor = 'not-allowed' }
 
   function clickTransition() {
     const transitionMsg = [
@@ -117,14 +119,14 @@ function draw() {
       text = 'RULES ';
       subtexts = [
         'PROTECT THE BALL',
-        'AT ALL COSTS',
+        'WITH YOUR PADDLE',
       ];
       clickTransition();
       break;
     case 5:
       subtexts = [
-        'DO NOT let the ball hit the wall!',
-        'PROTECT the ball with your paddle',
+        'IF YOU MISS',
+        'THE OTHER PLAYER GETS A POINT'
       ];
       clickTransition();
       break;
@@ -137,8 +139,8 @@ function draw() {
       break;
     case 7: 
       subtexts = [
-        '1st PLAYER TO MISS',
-        'LOSES THE GAME'
+        '1st PLAYER TO 11',
+        'WIN THE GAME'
       ]
       clickTransition();
       break;

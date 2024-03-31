@@ -3,6 +3,7 @@ let lastTs = Date.now();
 const winScore = 11;
 const stripHeight = 45;
 const paralyzed = false;
+let winner = false;
 
 function createBoundry(h) {
   return {
@@ -50,10 +51,6 @@ let j = 0;
 function draw() {
   clear();
   canvas.style.cursor = 'not-allowed';
-  const delta = Date.now() - lastTs;
-  lastTs = Date.now();
-
-
   let width = ball.radius;
   ctx.beginPath();
   ctx.fillStyle = 'white';
@@ -67,7 +64,7 @@ function draw() {
   ball.draw();
 
   function paddleUpdate(paddle, scoreCount, hitSound) {
-    paddle.y += (paddle.vy * delta / 10) * (paddle.count*1.5);
+    paddle.y += (paddle.vy) * (paddle.count*1.5);
     // down to up
     if (
       paddle.y > canvas.height
@@ -101,13 +98,6 @@ function draw() {
       ball.vx = -ball.vx;
       j++;
 
-      function yAxis() {
-        if (ball.vx > 5) {
-          ball.vx = (ball.vx + 1);
-          ball.vy = (ball.vy + 1);
-        }
-      }
-
       if (j < 3) {
         if (ball.vx > 0) {
           ball.vx = (ball.vx + 2);
@@ -116,7 +106,7 @@ function draw() {
           ball.vx = (ball.vx - 2);
           ball.vy = (ball.vy - 1);
         }
-      } else if (j > 3 && j > 7) {
+      } else if (j > 3 && j > 4) {
         if (ball.vx > 0) {
           ball.vx = (ball.vx + 1);
           ball.vy = (ball.vy + 0.5);
@@ -126,14 +116,12 @@ function draw() {
         }
       }
 
-      if (j % 3) {
+      if (j % 3 && j < 20) {
         let i = 0;
         
-        if (j > 10) yAxis();
-
         switch (Math.floor(Math.random()*(0,2))) {
           case 2:
-            if (j > 10) break;
+            if (j > 15) break;
             const changeCourse = setInterval(() => {
               if (i > 3) { clearInterval(changeCourse1)};
               ball.vy = (ball.vy + 0.15);
@@ -141,7 +129,7 @@ function draw() {
             }, 200)
             break;
           case 1:
-            if (j > 10) break;
+            if (j > 20) break;
             const changeCourse2 = setInterval(() => {
               if (i > 3) { clearInterval(changeCourse2)};
               ball.vy = (ball.vy + 0.25);
@@ -149,10 +137,25 @@ function draw() {
             }, 200)
             break;
           case 0:
-            yAxis();
+            if (j > 15) {
+              ball.vx = ball.vx - 1.5;
+              ball.vy = ball.vy - 1.5;
+              break;
+            }
+            if (ball.vx > 5) {
+              ball.vx = (ball.vx + 1);
+              ball.vy = (ball.vy + 1);
+            }
             break;
          }
+
+      } 
+
+      if (j%5) {
+        if (j%2) { ball.vy = ball.vy + 1 }
+        else { (ball.vy = ball.vy - 1) }
       }
+      
     }
   }
 
@@ -173,16 +176,16 @@ function draw() {
   score2.draw();
 
   if (ball.count<3) {
-    ball.x += (ball.vx * (delta / 20)) * ball.count;
-    ball.y += (ball.vy * (delta / 20)) / ball.count;
+    ball.x += (ball.vx * ball.count);
+    ball.y += (ball.vy / ball.count);
   } else {
     ball.x += ball.vx+3;
     ball.y += ball.vy+3;
   }
 
   paddleUpdate(paddle1, score, hit1);
-  
   function endGame() {
+
      setTimeout(() => {
         ball.vx = -ball.vx;
         running = false;
@@ -196,8 +199,11 @@ function draw() {
   }
 
   function resetDrawingBoard(scoreBoard) {
-    scoreBoard.count++;
-    scoreBoard.draw();
+    if (!winner) {
+      scoreBoard.count++;
+      scoreBoard.draw();
+    }
+
     if (scoreBoard.count < winScore - 1) {
       ball.x = canvas.width / 2;
       ball.vx = -ball.vx;
@@ -261,8 +267,10 @@ function draw() {
     paralized = false;
   }
 
-  if (score.count >= 11 || score2.count >= 11)
+  if (score.count >= 11 || score2.count >= 11) {
     endGame();
+    winner = true;
+  }
 
   raf = window.requestAnimationFrame(draw);
 }

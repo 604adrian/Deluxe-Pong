@@ -18,7 +18,7 @@ If it's a two player game, the game will end with the following animation:
 
 ![A GIF of the ending animation for two player games](./README-extras/game_over-p1.GIF)
 
-Matters are different for single player games, since the AI is unbeatable. This means that there is no use in announcing who won; it would simply be demoralizing. So single player games have this alternative end-game animation, instead:
+Matters are different for single player games, since the AI is unbeatable. This means that there is no use in announcing who won; it would simply be demoralizing. So single player games have this alternative end-game animation instead:
 
 ![A GIF of the ending animation for single player games](./README-extras/game_over-p2.GIF)
 
